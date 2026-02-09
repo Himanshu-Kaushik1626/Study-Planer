@@ -39,8 +39,15 @@ A modern, interactive, and dark-themed study planner web application built with 
     *   Check the **Dashboard** for your daily summary!
 
 ## 📸 Screenshots
+<img width="1919" height="972" alt="Screenshot 2026-02-09 163151" src="https://github.com/user-attachments/assets/61779711-054d-4184-b623-eb34a4c3acd9" />
+<img width="1915" height="969" alt="Screenshot 2026-02-09 163207" src="https://github.com/user-attachments/assets/247d3c08-6385-4408-88cd-263efa8c92de" />
+<img width="1917" height="980" alt="Screenshot 2026-02-09 163223" src="https://github.com/user-attachments/assets/cb973d8c-d3db-4fe9-bf04-9e7e981916c4" />
+<img width="1919" height="976" alt="Screenshot 2026-02-09 163238" src="https://github.com/user-attachments/assets/4dee044c-79d4-4371-94b4-2d70cdb5de0a" />
+<img width="1919" height="975" alt="Screenshot 2026-02-09 163254" src="https://github.com/user-attachments/assets/fac25f54-225f-42d9-a777-76de7f046ced" />
+<img width="1919" height="975" alt="Screenshot 2026-02-09 163307" src="https://github.com/user-attachments/assets/31700188-ea2b-4bf5-9a42-b00da323b44d" />
 
-*(Screenshots can be added here after running the app)*
+
+
 
 ## 🎨 Customization
 
@@ -50,4 +57,5 @@ A modern, interactive, and dark-themed study planner web application built with 
 ## 📄 License
 
 This project is open-source and available for educational purposes.
+
 
