@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons for icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo" onclick="navigateTo('dashboard')" style="cursor: pointer;">
+                <i class='bx bxs-graduation'></i>
+                <span>StudySmart</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-target="dashboard">
+                    <a href="#"><i class='bx bxs-dashboard'></i><span>Dashboard</span></a>
+                </li>
+                <li data-target="subjects">
+                    <a href="#"><i class='bx bxs-book'></i><span>Subjects</span></a>
+                </li>
+                <li data-target="schedule">
+                    <a href="#"><i class='bx bxs-calendar'></i><span>Schedule</span></a>
+                </li>
+                <li data-target="tasks">
+                    <a href="#"><i class='bx bxs-check-square'></i><span>Tasks</span></a>
+                </li>
+                <li data-target="focus">
+                    <a href="#"><i class='bx bxs-timer'></i><span>Focus Timer</span></a>
+                </li>
+                <li data-target="analytics">
+                    <a href="#"><i class='bx bxs-bar-chart-alt-2'></i><span>Analytics</span></a>
+                </li>
+                <li data-target="settings">
+                    <a href="#"><i class='bx bxs-cog'></i><span>Settings</span></a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header>
+                <div class="header-title">
+                    <h2 id="page-title">Dashboard</h2>
+                    <p id="current-date">Fetching date...</p>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-share" class="btn-icon" aria-label="Share Plan" title="Share Day Plan">
+                        <i class='bx bxs-share-alt'></i>
+                    </button>
+                    <button id="theme-toggle" class="btn-icon" aria-label="Toggle Theme">
+                        <i class='bx bxs-sun'></i>
+                    </button>
+                    <div class="user-profile" onclick="openModal('profile-modal')" style="cursor: pointer;"
+                        title="Edit Profile">
+                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=User&background=random"
+                            alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Views -->
+            <div id="view-container">
+                <!-- Dashboard View -->
+                <section id="dashboard" class="view active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="--color: var(--neon-blue);">
+                                <i class='bx bxs-book-content'></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Total Subjects</h3>
+                                <p id="stat-subjects">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="--color: var(--neon-purple);">
+                                <i class='bx bxs-checkbox-checked'></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Tasks Done</h3>
+                                <p id="stat-tasks-done">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="--color: var(--neon-warning);">
+                                <i class='bx bxs-time-five'></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Pending Tasks</h3>
+                                <p id="stat-tasks-pending">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="card next-up-card">
+                            <h3><i class='bx bxs-calendar-event'></i> Today's Schedule</h3>
+                            <div id="today-schedule-list" class="empty-state">No classes scheduled for today.</div>
+                        </div>
+                        <div class="card recent-tasks-card">
+                            <h3><i class='bx bxs-hourglass'></i> Upcoming Deadlines</h3>
+                            <ul id="upcoming-tasks-list" class="task-list-preview">
+                                <!-- Tasks injected here -->
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subjects View -->
+                <section id="subjects" class="view">
+                    <div class="section-header">
+                        <h3>Manage Subjects</h3>
+                        <button class="btn-primary" onclick="openModal('subject-modal')">
+                            <i class='bx bx-plus'></i> Add Subject
+                        </button>
+                    </div>
+                    <div id="subjects-grid" class="grid-container">
+                        <!-- Subject cards injected here -->
+                    </div>
+                </section>
+
+                <!-- Schedule View -->
+                <section id="schedule" class="view">
+                    <div class="section-header">
+                        <h3>Weekly Timetable</h3>
+                        <button class="btn-primary" onclick="openModal('schedule-modal')">
+                            <i class='bx bx-plus'></i> Add Class
+                        </button>
+                    </div>
+                    <div class="schedule-container">
+                        <!-- Schedule grid injected here -->
+                        <div class="timetable-wrapper">
+                            <div class="timetable-grid" id="timetable-grid">
+                                <!-- Grid generated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tasks View -->
+                <section id="tasks" class="view">
+                    <div class="section-header">
+                        <h3>Task Manager</h3>
+                        <button class="btn-primary" onclick="openModal('task-modal')">
+                            <i class='bx bx-plus'></i> Add Task
+                        </button>
+                    </div>
+                    <div class="task-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="pending">Pending</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                    <div id="tasks-list" class="tasks-container">
+                        <!-- Tasks injected here -->
+                    </div>
+                </section>
+
+                <!-- Focus Timer View -->
+                <section id="focus" class="view">
+                    <div class="focus-container">
+                        <div class="timer-display" onclick="toggleTimer()" title="Click to Start/Pause">
+                            <svg class="progress-ring" width="300" height="300">
+                                <!-- Background Track -->
+                                <circle class="progress-ring__background" stroke="rgba(255,255,255,0.05)"
+                                    stroke-width="10" fill="transparent" r="140" cx="150" cy="150" />
+                                <!-- Progress Circle -->
+                                <circle class="progress-ring__circle" stroke="var(--neon-blue)" stroke-width="10"
+                                    stroke-linecap="round" fill="transparent" r="140" cx="150" cy="150" />
+                            </svg>
+                            <div class="timer-text-container">
+                                <h1 id="timer-text">25:00</h1>
+                                <p id="timer-status">FOCUS</p>
+                            </div>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="btn-primary" onclick="startTimer()"><i class='bx bx-play'></i> Start</button>
+                            <button class="btn-secondary" onclick="pauseTimer()"><i class='bx bx-pause'></i>
+                                Pause</button>
+                            <button class="btn-danger" onclick="resetTimer()"><i class='bx bx-reset'></i> Reset</button>
+                        </div>
+                        <div class="timer-modes">
+                            <button class="mode-btn active" onclick="setTimerMode(25)">Focus (25m)</button>
+                            <button class="mode-btn" onclick="setTimerMode(5)">Break (5m)</button>
+                            <button class="mode-btn" onclick="setTimerMode(50)">Long Focus (50m)</button>
+                        </div>
+                        <div class="custom-timer"
+                            style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; align-items: center;">
+                            <input type="number" id="custom-time-input" placeholder="Min" min="1" max="240"
+                                style="width: 70px; padding: 8px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                            <button class="btn-secondary" onclick="setCustomTime()"
+                                style="padding: 8px 15px;">Set</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics View -->
+                <section id="analytics" class="view">
+                    <h3>Progress Analytics</h3>
+                    <div class="analytics-grid">
+                        <div class="chart-card">
+                            <h4>Task Completion Rate</h4>
+                            <div class="pie-chart-container" id="completion-chart">
+                                <div class="chart-hole">
+                                    <span id="completion-text">0%</span>
+                                </div>
+                            </div>
+                            <div class="chart-legend">
+                                <span><span class="dot done"></span> Completed</span>
+                                <span><span class="dot pending"></span> Pending</span>
+                            </div>
+                        </div>
+                        <div class="chart-card" style="flex: 2;">
+                            <h4>Tasks by Subject</h4>
+                            <div id="subject-chart-container" class="bar-chart-container">
+                                <!-- Bar chart injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings View -->
+                <section id="settings" class="view">
+                    <h3>Settings</h3>
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <div class="setting-icon"><i class='bx bxs-palette'></i></div>
+                            <h4>Appearance</h4>
+                            <p>Customize the look and feel.</p>
+                            <div class="setting-control">
+                                <label>Dark Mode</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="setting-theme-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-card">
+                            <div class="setting-icon" style="color: var(--neon-warning);"><i class='bx bxs-data'></i>
+                            </div>
+                            <h4>Data Management</h4>
+                            <p>Manage your local data.</p>
+                            <div class="setting-control">
+                                <button class="btn-danger full-width" id="btn-reset-data">
+                                    <i class='bx bxs-trash'></i> Reset All Data
+                                </button>
+                                <button class="btn-secondary full-width" id="btn-export-data" style="margin-top:10px;">
+                                    <i class='bx bxs-download'></i> Export Data (JSON)
+                                </button>
+                            </div>
+                        </div>
+                        <div class="setting-card">
+                            <div class="setting-icon" style="color: var(--neon-green);"><i
+                                    class='bx bxs-info-circle'></i></div>
+                            <h4>About</h4>
+                            <p>Smart Study Planner v1.0</p>
+                            <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:10px;">
+                                Built with vanilla JS for performance and simplicity.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-btn" onclick="closeModal('profile-modal')">&times;</span>
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <!-- Profile Image Removed -->
+            </div>
+            <h3>Edit Profile</h3>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="profile-name" required placeholder="Enter your name">
+                </div>
+                <!-- Profile Image Removed -->
+                <div class="form-group">
+                    <label>University / School</label>
+                    <input type="text" id="profile-uni" placeholder="e.g. Harvard University">
+                </div>
+                <div class="form-group">
+                    <label>Course / Major</label>
+                    <input type="text" id="profile-course" placeholder="e.g. Computer Science">
+                </div>
+                <button type="submit" class="btn-primary">Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Subject Modal -->
+    <div id="subject-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-btn" onclick="closeModal('subject-modal')">&times;</span>
+            <h3>Add/Edit Subject</h3>
+            <form id="subject-form">
+                <input type="hidden" id="subject-id">
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" id="subject-name" required placeholder="e.g. Mathematics">
+                </div>
+                <div class="form-group">
+                    <label>Color Code</label>
+                    <input type="color" id="subject-color" value="#00d4ff">
+                </div>
+                <button type="submit" class="btn-primary">Save Subject</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-btn" onclick="closeModal('task-modal')">&times;</span>
+            <h3>Add/Edit Task</h3>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="task-title" required placeholder="e.g. Calculus Homework">
+                </div>
+                <div class="form-group">
+                    <label>Description (Optional)</label>
+                    <textarea id="task-desc" rows="3" placeholder="Add details..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <select id="task-subject" required>
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="datetime-local" id="task-due" required>
+                </div>
+                <button type="submit" class="btn-primary">Save Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="schedule-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-btn" onclick="closeModal('schedule-modal')">&times;</span>
+            <h3>Add Class Schedule</h3>
+            <form id="schedule-form">
+                <input type="hidden" id="schedule-id">
+                <div class="form-group">
+                    <label>Subject</label>
+                    <select id="schedule-subject" required>
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Day</label>
+                    <select id="schedule-day" required>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" id="schedule-time" required>
+                </div>
+                <div class="form-group">
+                    <label>Duration (mins)</label>
+                    <input type="number" id="schedule-duration" value="60" min="15" required>
+                </div>
+                <button type="submit" class="btn-primary">Save Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
